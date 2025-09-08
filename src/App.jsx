@@ -7,7 +7,8 @@ const App = () => {
     username: '',
     password: ''
   });
-  const [message, setMessage] = useState(''); // Estado para el mensaje
+  const [message, setMessage] = useState('');
+  const [showCredentials, setShowCredentials] = useState(false); // Estado para mostrar credenciales
 
   const navigate = useNavigate();
 
@@ -17,19 +18,18 @@ const App = () => {
       ...prev,
       [name]: value
     }));
-    setMessage(''); // Limpiar mensaje al escribir
+    setMessage('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Verificación local: usuario 'Jhon' y contraseña '123'
     if (credentials.username !== 'Jhon') {
       setMessage('Usuario incorrecto');
     } else if (credentials.password !== '123') {
       setMessage('Contraseña incorrecta');
     } else {
       setMessage('Login exitoso');
-      setTimeout(() => navigate('/dashboard'), 1000); // Redirigir después de mostrar mensaje
+      setTimeout(() => navigate('/dashboard'), 1000);
     }
   };
 
@@ -76,6 +76,22 @@ const App = () => {
           <p>Aún no tienes una cuenta? <a href="#signup">Crear cuenta</a></p>
         </div>
       </form>
+
+      <button
+        className="login-button"
+        style={{ maxWidth: 300, margin: '10px auto', display: 'block' }}
+        onClick={() => setShowCredentials(prev => !prev)}
+      >
+        {showCredentials ? 'Ocultar credenciales' : 'Ver credenciales'}
+      </button>
+
+      {showCredentials && (
+        <div className="credentials-card">
+          <h3>Credenciales correctas</h3>
+          <p><strong>Username:</strong> Jhon</p>
+          <p><strong>Password:</strong> 123</p>
+        </div>
+      )}
     </div>
   );
 };
